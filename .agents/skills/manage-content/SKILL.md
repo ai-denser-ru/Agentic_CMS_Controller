@@ -1,6 +1,7 @@
 ---
 name: "manage-content"
 description: "Adds, edits, or deletes content nodes (like menu items, services) in the Agentic CMS by modifying Markdown and JSON files in the /src/content/ directories. Use this when a user asks to add something to the site's catalog, menu, or pages."
+allowed-tools: ReadWrite, Glob, Grep, Git
 ---
 
 ## Goal
@@ -23,11 +24,14 @@ Trigger this skill whenever the user requests to:
 6. **Commit and Push the Changes:** Use `git status` to see the changes, then `git add` and `git commit` them with a semantic commit message (e.g., `content(nodes): add new latte item to menu`). Finally, run `git push` to upload the changes to the client's remote repository. **Never push force**.
 
 ## Guardrails
+- **Proactive Inquiry (No Guessing):** If a task or schema requirement is ambiguous, DO NOT guess. You must ask the user for clarification before executing.
+- **Scope Constraint:** You are STRICTLY FORBIDDEN from writing, translating, or modifying localization files or schemas without explicit manual user confirmation.
+- **Anti-Translation Rule:** NEVER copy Russian text into English/Spanish/Portuguese files to "synchronize" them. NEVER use automated translation for content without being explicitly asked. If you are asked to add a new item, add it in the requested language and ask the user if they want you to translate it for other active locales.
+- **Anti-Schema Modification Rule:** If a language schema enforces fields like `vocabulary: category`, DO NOT guess or infer other schema structures. DO NOT run recursive scripts trying to "fix" schema mismatches. Run exactly what the user asks and nothing more.
 - **DO NOT** modify the UI components (`.astro`, `.tsx`) or the business logic unless the user explicitly requests a design change.
 - **DO NOT** delete Markdown files without explicit 'Human-in-the-loop' confirmation from the user.
-- **NEVER** delete entire locale directories (e.g., `src/content/nodes/en/`, `es/`, `pt-br/`) to fix Astro build errors like `Missing parameter: slug`. These errors usually indicate a mismatch between `src/i18n/ui.ts` locales and the existing folder structure, or missing translations.
-- **NEVER** calculate or convert prices/currencies (e.g. replacing '₽' with 'ARS' or 'R$' and changing numbers). Always keep the original numerical value and the exact original currency symbol across all language translations unless explicitly instructed by the user.
-- **DO NOT** stray outside the `src/content/` directory of the active CMS project for this skill unless modifying global settings.
+- **NEVER** calculate or convert prices/currencies. Always keep the exact original numerical value and currency symbol (e.g., use '₽' for all languages) unless explicitly instructed otherwise.
+- **DO NOT** stray outside the `src/content/` directory of the active CMS project for this skill.
 
 ## Completion Checklist
 - [ ] Content file (Markdown/JSON) is correctly placed in the right translation folder.
