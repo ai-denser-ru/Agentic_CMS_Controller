@@ -17,7 +17,7 @@ Trigger when the user intent is:
 2. **Read the Schema:** Always check `src/content/config.ts` first. JSON files must perfectly match the internal Zod schema structure.
 3. **Parse and Update:** Read the `.json` file, manipulate the data structure ensuring keys perfectly match the schema, and write it back formatted beautifully with 2 spaces.
 4. **Ensure Localization Consistency:** You MUST ALWAYS update the corresponding settings/links in **ALL** other locale files (e.g., `navigation.ru.json`, `navigation.en.json`, `navigation.es.json`, `navigation.pt-br.json`) at the same time. Never leave translations missing or out of sync.
-5. **Commit:** Ensure changes are staged and committed using atomic descriptions (e.g., `chore(settings): update phone number in contact settings`). Never run `git push --force`.
+5. **Commit and Push:** Ensure changes are staged and committed using atomic descriptions (e.g., `chore(settings): update phone number in contact settings`). Finally, run `git push` to upload the changes to the client's remote repository. Never run `git push --force`.
 
 ## Guardrails
 - **DO NOT** edit code or layout files inside `/src/layouts/` or `/src/components/`.

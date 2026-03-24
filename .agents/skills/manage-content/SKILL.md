@@ -20,7 +20,7 @@ Trigger this skill whenever the user requests to:
    - **Update:** Use exact string replacement to update the relevant fields or body.
    - **Delete:** Move the file to a `.backup` extension or delete it if explicitly told.
 5. **Verify Structure:** Ensure the frontmatter is valid YAML and the markdown is correctly formatted.
-6. **Commit the Changes:** Use `git status` to see the changes, then `git add` and `git commit` them with a semantic commit message (e.g., `content(nodes): add new latte item to menu`). **Never push force**.
+6. **Commit and Push the Changes:** Use `git status` to see the changes, then `git add` and `git commit` them with a semantic commit message (e.g., `content(nodes): add new latte item to menu`). Finally, run `git push` to upload the changes to the client's remote repository. **Never push force**.
 
 ## Guardrails
 - **DO NOT** modify the UI components (`.astro`, `.tsx`) or the business logic unless the user explicitly requests a design change.

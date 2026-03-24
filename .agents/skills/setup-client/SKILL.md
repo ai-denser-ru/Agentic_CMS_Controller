@@ -25,11 +25,15 @@ Trigger this skill when the user:
    - Delete or rewrite boilerplate-specific files that shouldn't be in the client's repo (delete `MVP.md` and `AGENTS.md`; completely rewrite `README.md` to be about the client's new project).
    - Edit `astro.config.mjs`: remove `base: '/Agentic_CMS'` (or set it to `/` if needed) and update `site` to the client's actual production domain or a placeholder.
    - Edit `src/i18n/ui.ts`: remove or replace boilerplate strings like "Agentic_CMS" and branded texts like "Работает на Astro.js" with the client's actual brand.
-4. **Verify Integrity:** After cloning or detecting a project, verify its structure. It MUST have:
+4. **Link Remote Repository (for New Sites):**
+   - Ask the user to create an empty repository (e.g., on GitHub/GitLab) and provide the URL.
+   - Use `git remote add origin <URL>`, then create an initial commit: `git branch -M main && git add . && git commit -m "chore: initial CMS boilerplate setup"`.
+   - Push to the remote repository: `git push -u origin main`.
+5. **Verify Integrity:** After cloning or detecting a project, verify its structure. It MUST have:
    - `src/content/config.ts` defining the Zod schemas.
    - `/src/content/nodes/` and `/src/content/pages/` directories.
    - If these are missing, warn the user that the repository is NOT compatible with Agentic CMS.
-5. **Finalize Setup:** Once validated, inform the user that the site is ready for content editing and ask what they would like to add or change.
+6. **Finalize Setup:** Once validated, inform the user that the site is ready for content editing and ask what they would like to add or change.
 
 ## Guardrails
 - **DO NOT** clone a new site inside an existing Git repository (abort and tell the user to navigate to a clean workspace directory like `~/DEV/`).
