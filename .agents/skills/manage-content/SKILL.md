@@ -26,6 +26,7 @@ Trigger this skill whenever the user requests to:
 - **DO NOT** modify the UI components (`.astro`, `.tsx`) or the business logic unless the user explicitly requests a design change.
 - **DO NOT** delete Markdown files without explicit 'Human-in-the-loop' confirmation from the user.
 - **NEVER** delete entire locale directories (e.g., `src/content/nodes/en/`, `es/`, `pt-br/`) to fix Astro build errors like `Missing parameter: slug`. These errors usually indicate a mismatch between `src/i18n/ui.ts` locales and the existing folder structure, or missing translations.
+- **NEVER** calculate or convert prices/currencies (e.g. replacing '₽' with 'ARS' or 'R$' and changing numbers). Always keep the original numerical value and the exact original currency symbol across all language translations unless explicitly instructed by the user.
 - **DO NOT** stray outside the `src/content/` directory of the active CMS project for this skill unless modifying global settings.
 
 ## Completion Checklist
