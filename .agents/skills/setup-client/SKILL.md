@@ -20,9 +20,17 @@ Trigger this skill when the user:
 2. **Setup or Clone:** 
    - Ask the user: "Do you want to connect an existing site repository, or create a brand new one from the Agentic CMS boilerplate?"
    - If **Existing**: Ask for the Git URL and use `git clone <URL>` into the workspace.
-   - If **New**: Ask for a new project name. Clone the base boilerplate `https://github.com/ai-denser-ru/Agentic_CMS.git` into a new folder, remove its `.git` history (`rm -rf .git`), and initialize a fresh git repository (`git init`).
+   - If **New**: 
+    - **Preparation**: 
+      - Clone the boilerplate: `git clone https://github.com/ai-denser-ru/Agentic_CMS.git .`
+      - **CRITICAL**: Do NOT delete `AGENTS.md`. This file contains your core instructions. You may delete `README.md` and `MVP.md` to replace them with client-specific content.
+      - Initialize git: `rm -rf .git && git init`.
+    - **Content Parity**: 
+      - You MUST maintain 4-locale structural parity at all times.
+      - When creating the first content nodes, do NOT simply delete all `placeholder.md` files. Instead, **replace** them with actual content for the client in **ALL 4 locales** (`ru`, `en`, `es`, `pt-br`).
+      - If you don't have translations yet, copy the source language content and add `<!-- TODO: Translate -->`.
 3. **Boilerplate Content Sync (Build-Safe):** If a new site was just cloned:
-   - Delete boilerplate-specific management files: `MVP.md`, `AGENTS.md`.
+   - Delete boilerplate-specific management files: `MVP.md`.
    - Rewrite `README.md` to be a professional welcome for the client's project.
    - **Boilerplate Content Sync (Build-Safe):** The Agentic CMS boilerplate ALREADY contains a full structure of `placeholder.md` files for all collections and locales. 
      - **MANDATORY VERIFICATION**: For each locale `[ru, en, es, pt-br]`, verify that the following directories and files exist (do not recreate if they are already present):
