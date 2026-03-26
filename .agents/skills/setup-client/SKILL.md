@@ -21,10 +21,26 @@ Trigger this skill when the user:
    - Ask the user: "Do you want to connect an existing site repository, or create a brand new one from the Agentic CMS boilerplate?"
    - If **Existing**: Ask for the Git URL and use `git clone <URL>` into the workspace.
    - If **New**: Ask for a new project name. Clone the base boilerplate `https://github.com/ai-denser-ru/Agentic_CMS.git` into a new folder, remove its `.git` history (`rm -rf .git`), and initialize a fresh git repository (`git init`).
-3. **Clean and Contextualize Boilerplate:** If a new site was just cloned:
-   - Delete or rewrite boilerplate-specific files that shouldn't be in the client's repo (delete `MVP.md` and `AGENTS.md`; completely rewrite `README.md` to be about the client's new project).
-   - Edit `astro.config.mjs`: remove `base: '/Agentic_CMS'` (or set it to `/` if needed) and update `site` to the client's actual production domain or a placeholder.
-   - Edit `src/i18n/ui.ts`: remove or replace boilerplate strings like "Agentic_CMS" and branded texts like "Работает на Astro.js" with the client's actual brand.
+3. **Boilerplate Content Sync (Build-Safe):** If a new site was just cloned:
+   - Delete boilerplate-specific management files: `MVP.md`, `AGENTS.md`.
+   - Rewrite `README.md` to be a professional welcome for the client's project.
+   - **Boilerplate Content Sync (Build-Safe):** The Agentic CMS boilerplate ALREADY contains a full structure of `placeholder.md` files for all collections and locales. 
+     - **MANDATORY VERIFICATION**: For each locale `[ru, en, es, pt-br]`, verify that the following directories and files exist (do not recreate if they are already present):
+       - `src/content/nodes/<locale>/placeholder.md`
+       - `src/content/blocks/<locale>/placeholder.md`
+       - `src/content/staff/<locale>/placeholder.md`
+       - `src/content/taxonomy/<locale>/placeholder.md`
+     - **ACTION**: If any of these are missing (e.g., if the user is using an outdated boilerplate), create a simple `placeholder.md` using a single `printf --` command per file (e.g., `printf -- "---\ntitle: Placeholder\ndraft: true\n---\n" > path/to/file.md`). Avoid complex nested shell loops with `cat <<EOF` to prevent bash syntax errors.
+     - **Site Configuration**: NEVER edit `astro.config.mjs` or `src/i18n/ui.ts` directly. Instead, update `src/content/settings/site.json` with the client's information:
+      - `site`: `https://[username].github.io`
+      - `base`: `/[project-name]`
+      - `defaultLocale`: `ru` (or as requested).
+    - **Structural Initialization**: Ensure that `src/content/pages/` contains exactly `index.md` and `about.md` in **ALL** supported locales.
+      - You MUST update the content of these pages to match the client's name and basic business type in the corresponding language.
+    - **Audit Step**:
+      - Run `ls -R src/content/` to verify parity.
+      - Run `npx astro check` to verify build health.
+      - **FORBIDDEN**: Do NOT run `npm install` to "fix" missing packages like `@astrojs/check`. These MUST already be in `package.json`. If `astro check` fails due to missing packages, report it as a boilerplate bug.
 4. **Link Remote Repository (for New Sites):**
    - Ask the user to create an empty repository (e.g., on GitHub/GitLab) and provide the URL.
    - Use `git remote add origin <URL>`, then create an initial commit: `git branch -M main && git add . && git commit -m "chore: initial CMS boilerplate setup"`.
