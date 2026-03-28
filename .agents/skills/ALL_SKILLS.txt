@@ -1,0 +1,228 @@
+---
+name: "manage-blocks"
+description: "Adds, edits, or deletes content blocks (Promo, Testimonials, CTA) via Layer 3 tools. Use this to change the site's interactive elements and promotional sections."
+---
+
+## Goal
+To manage reusable content blocks (promo, testimonial, cta) using structured data and MCP tools while ensuring consistency across locales.
+
+## When to Use
+Trigger when the user requests to:
+- "Add a new testimonial from a customer"
+- "Update the main promo banner on the landing page"
+- "Create a Call-to-Action block for the footer"
+- "Deactivate an old promotional banner"
+
+## Workflow
+1. **Prepare Data:** Formulate the structured JSON representing the block content and metadata (block_type, placement, weight, active).
+2. **I18n Consistency:** Ensure synchronization across all locales (`ru`, `en`, `es`, `pt-br`).
+3. **MCP Tool Call:** Use appropriate tools (e.g., `get_block`, `create_block`, `update_block`) to apply changes.
+4. **Human-in-the-Loop:** 
+   - **CRITICAL:** Before calling any delete tools (e.g., `delete_block`), you MUST ask the user for explicit confirmation.
+   - Summarize what will be deleted and why.
+
+## Guardrails
+- **STRICTLY FORBIDDEN** to use direct file system commands.
+- Maintain structural parity across all 4 locales.
+- Ensure `block_type` is one of `promo`, `testimonial`, `cta`.
+
+## Completion Checklist
+- [ ] Data structured according to requirements (BlockSchema).
+- [ ] User confirmation obtained for any destructive actions.
+- [ ] MCP tools called for all locales.
+---
+name: "manage-nodes"
+description: "Adds, edits, or deletes catalog nodes (menu items, services) via Layer 3 tools. Use this to update the catalog, prices, or add new items."
+---
+
+## Goal
+To manage atomic catalog entities (nodes) using structured data and MCP tools while maintaining structure across locales.
+
+## When to Use
+Trigger when the user requests to:
+- "Add a new coffee to the menu"
+- "Update the price of the yoga class"
+- "Create a new news post"
+- "Delete an old service item"
+
+## Workflow
+1. **Prepare Data:** formulate the structured JSON for the node (fields like `price`, `type`, `taxonomies`).
+2. **I18n Consistency:** Apply changes to all locales (`ru`, `en`, `es`, `pt-br`) simultaneously.
+3. **MCP Tool Call:** Use appropriate tools (e.g., `get_node`, \`update_node\`) to apply changes.
+4. **Human-in-the-Loop:** 
+   - **CRITICAL:** Request explicit user confirmation before any deletion (e.g., `delete_node`).
+   - Clearly state which node is being targeted.
+
+## Guardrails
+- **STRICTLY FORBIDDEN** to use direct file system commands.
+- No automatic currency conversion unless requested.
+
+## Completion Checklist
+- [ ] Node data structured correctly.
+- [ ] User confirmation obtained for deletions.
+- [ ] MCP tools called for all locales.
+---
+name: "manage-pages"
+description: "Adds, edits, or deletes structural pages (About Us, Contacts) via Layer 3 tools. Use this to change the site's layout or update general content on landing pages."
+---
+
+## Goal
+To manage complex, structural entities (pages) using structured data and MCP tools while ensuring consistency across locales.
+
+## When to Use
+Trigger when the user requests to:
+- "Update the About Us section"
+- "Create a new Landing Page for a promotion"
+- "Add a Contacts page"
+- "Delete the old Privacy Policy"
+
+## Workflow
+1. **Prepare Data:** Formulate the structured JSON representing the page content and metadata.
+2. **I18n Consistency:** Ensure synchronization across all locales (`ru`, `en`, `es`, \`pt-br\`).
+3. **MCP Tool Call:** Use appropriate tools (e.g., `get_page`, `update_page`) to apply changes.
+4. **Human-in-the-Loop:** 
+   - **CRITICAL:** Before calling any delete tools (e.g., `delete_page`), you MUST ask the user for explicit confirmation.
+   - Summarize what will be deleted and why.
+
+## Guardrails
+- **STRICTLY FORBIDDEN** to use direct file system commands.
+- Maintain structural parity across all 4 locales.
+
+## Completion Checklist
+- [ ] Data structured according to requirements.
+- [ ] User confirmation obtained for any destructive actions.
+- [ ] MCP tools called for all locales.
+---
+name: "manage-settings"
+description: "Modifies global site configuration, navigation menus, and metadata at Layer 3. Use this when you are asked to change the global menu structure, correct site titles, or update working hours."
+---
+
+## Goal
+To safely modify system configurations using the Read-Modify-Write pattern via MCP tools.
+
+## When to Use
+Trigger when the user intent is:
+- "Change the navigation menu to point to /about-us"
+- "Update our contact phone number in the footer"
+- "Add 'ru' language fallback"
+
+## Workflow (Read-Modify-Write)
+1. **Read Current State:** Call the MCP tool `get_settings(setting_type, locale)` to retrieve the current JSON configuration.
+2. **Modify Object:** Apply the requested changes to the obtained JSON object. 
+   - **STRICT RULE:** Keep all other fields untouched. 
+   - **I18n Parity:** You MUST repeat this for ALL supported locales (`ru`, `en`, `es`, `pt-br`) to ensure synchronization.
+3. **Save Changes:** Call the MCP tool `update_settings(setting_type, locale, payload)` to commit the changes.
+   - Use the modified JSON as the `payload`.
+
+## Guardrails
+- **CRITICAL:** **DO NOT** use any shell commands or direct file system access.
+- **Data Integrity:** Do not rename or remove existing top-level JSON keys. Only modify their values.
+- **No-Auto-Translation:** Never use automatic translation for values. Copy from source and request translation if needed.
+
+## Completion Checklist
+- [ ] Setting retrieved via `get_settings`.
+- [ ] Payload validated and sent via `update_settings` for all locales.
+- [ ] User is informed about the updates.
+---
+name: "manage-staff"
+description: "Adds, edits, or deletes staff profiles (coaches, instructors, bio) via Layer 3 tools. Use this to maintain your team list."
+---
+
+## Goal
+To manage complex staff profiles and biographies using structured data and MCP tools while ensuring consistency across locales.
+
+## When to Use
+Trigger when the user requests to:
+- "Add a new yoga instructor"
+- "Update the bio of our master coach"
+- "Create a staff card for the founder"
+- "Delete the old bio of a resigned instructor"
+
+## Workflow
+1. **Prepare Data:** Formulate the structured JSON representing the staff profile (title, role, bio, image, email, order).
+2. **I18n Consistency:** Ensure synchronization across all locales (`ru`, `en`, `es`, `pt-br`).
+3. **MCP Tool Call:** Use appropriate tools (e.g., `get_staff`, `create_staff`, `update_staff`) to apply changes.
+4. **Human-in-the-Loop:** 
+   - **CRITICAL:** Before calling any delete tools (e.g., `delete_staff`), you MUST ask the user for explicit confirmation.
+   - Summarize what will be deleted and why.
+
+## Guardrails
+- **STRICTLY FORBIDDEN** to use direct file system commands.
+- Biographies should be grammatically correct across all 4 locales.
+- Maintain structural parity across all 4 locales.
+
+## Completion Checklist
+- [ ] Data structured according to requirements (StaffSchema).
+- [ ] User confirmation obtained for any destructive actions.
+- [ ] MCP tools called for all locales.
+---
+name: "manage-taxonomy"
+description: "Adds, edits, or deletes categories, tags, or levels via Layer 3 tools. Use this to classify news, classes, or products."
+---
+
+## Goal
+To manage taxonomic classification for content entities (news, classes, etc.) while ensuring consistency across locales.
+
+## When to Use
+Trigger when the user requests to:
+- "Add a new 'Yoga' category"
+- "Create a 'Beginner' level tag"
+- "Update the weight of the 'News' category"
+- "Delete an unused tag"
+
+## Workflow
+1. **Prepare Data:** Formulate the structured JSON representing the term (title, vocabulary, weight).
+2. **I18n Consistency:** Ensure synchronization across all locales (`ru`, `en`, `es`, `pt-br`).
+3. **MCP Tool Call:** Use appropriate tools (e.g., `get_term`, `create_term`, `update_term`) to apply changes.
+4. **Human-in-the-Loop:** 
+   - **CRITICAL:** Before calling any delete tools (e.g., `delete_term`), you MUST ask the user for explicit confirmation.
+   - Summarize what will be deleted and why.
+
+## Guardrails
+- **STRICTLY FORBIDDEN** to use direct file system commands.
+- Ensure `vocabulary` is one of `category`, `level`, `tag`.
+- Maintain structural parity across all 4 locales.
+
+## Completion Checklist
+- [ ] Data structured according to requirements (TaxonomySchema).
+- [ ] User confirmation obtained for any destructive actions.
+- [ ] MCP tools called for all locales.
+---
+name: "setup-client"
+description: "Initializes or validates a client's website repository. Use this to ensure the environment is ready for the LUI Orchestrator to work via MCP."
+---
+
+## Goal
+To ensure a valid client site instance (`Agentic_CMS_ClientName`) is present, properly structured, and accessible to the Layer 3 MCP server.
+
+## When to Use
+Trigger this skill when the user:
+- "Start a new project for a client"
+- "Initialize the environment"
+- When MCP tools fail due to a missing directory.
+
+## Workflow
+1. **Verify Connection:** Attempt to call `get_settings` via MCP.
+   - If SUCCESS: The site is ready. Inform the user and transition to content skills.
+   - If FAILURE (Path not found): Proceed to Step 2.
+2. **Initialization (The "USB-C" Connection):**
+   - Ask the user for the Client Name and Git Repository URL.
+   - **Clone:** Use `git clone` to create the site instance from the boilerplate.
+   - **Isolate:** Ensure the site is in a dedicated folder (e.g., `Agentic_CMS_Site`).
+3. **Bootstrap Content:**
+   - Ensure the 4-locale structure (`ru`, `en`, `es`, `pt-br`) is intact.
+   - Use `get_settings` and `update_settings` to set the client's business name and URLs.
+4. **Validation Loop:**
+   - Call `list_pages` and `list_nodes` via MCP to verify the Layer 3 connection is active.
+   - Report status to the user.
+
+## Guardrails
+- **NO DIRECT FS:** After the initial `git clone`, all content operations MUST switch to MCP tools.
+- **STRICT LOCALE PARITY:** Never skip a locale during setup.
+- **AGENTS.md PROTECTION:** Never overwrite the controller's rules during site setup.
+
+## Completion Checklist
+- [ ] Site instance directory created and populated.
+- [ ] MCP server successfully communicates with the new site.
+- [ ] Basic client settings (site name, locale) initialized.
+- [ ] User notified that the "Orchestrator is online".
